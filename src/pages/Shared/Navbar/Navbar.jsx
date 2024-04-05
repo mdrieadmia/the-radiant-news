@@ -1,6 +1,18 @@
-import { NavLink } from "react-router-dom";
-import user from "../../../assets/user.png"
+import { Link, NavLink } from "react-router-dom";
+import userIcon from "../../../assets/userIcon.png";
+import { useContext } from "react";
+import { AuthContext } from "../../../firebase/AuthProvider";
+
+
+
 const Navbar = () => {
+
+    const {user, logOutUser} = useContext(AuthContext)
+    
+    // Logout function 
+    const handleLogout =()=>{
+        logOutUser()
+    }
 
     const links = <>
         <li className="font-semibold font-poppins text-base"><NavLink to={"/"}> Home </NavLink></li>
@@ -27,8 +39,16 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end flex gap-3">
-                    <img className="w-10" src={user} alt="User Icon" />
-                    <button className="px-7 py-2 bg-blue-400 text-white text-lg font-bold">Login</button>
+                    {
+                        user ? 
+                        <>
+                            <img className="w-10" src={userIcon} alt="User Icon" />
+                            <button onClick={handleLogout} className="px-7 py-2 bg-blue-400 text-white text-lg font-bold">Log out</button>
+                        </>
+                        :
+                        <Link to={'/login'} className="px-7 py-2 bg-blue-400 text-white text-lg font-bold">Login</Link>
+
+                    }
                 </div>
             </div>
         </div>
